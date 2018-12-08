@@ -1,0 +1,28 @@
+[branch]
+  autosetuprebase = always
+[alias]
+  dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --color \"$@\" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
+  co = checkout
+  st = status
+  ci = commit
+  last = log -1 HEAD
+  delete-merged-branches = "!git co master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+  branch-name = "!git rev-parse --abbrev-ref HEAD"
+  # Push the current branch to the remote "origin", and set it to track
+  # the upstream branch
+  publish = "!git push -u origin $(git branch-name)"
+  amend = commit --amend --no-edit
+  yolo = "!git commit --amend --no-edit && git push -f"
+  open = "!f(){ open `git remote -v | awk '/fetch/{print $2}' | sed -Ee 's#(git@|git://)#http://#' -e 's@com:@com/@'`| head -n1; }; f"
+[core]
+  editor = vim
+  excludesfile = /Users/diego.fu/.gitignore_global
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[user]
+  name = Diego Fu
+  email = diegofu714@hotmail.com
